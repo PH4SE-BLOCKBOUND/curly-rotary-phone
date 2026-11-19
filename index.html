@@ -16,6 +16,7 @@
   --text:#f6f2ff;
   --muted:#aaa5c4;
 }
+
 * {box-sizing:border-box;margin:0;padding:0}
 html {scroll-behavior:smooth}
 body {
@@ -25,6 +26,8 @@ body {
   overflow-x:hidden;
 }
 a {color:inherit;text-decoration:none}
+
+/* HEADER */
 
 header {
   height:76px;
@@ -36,7 +39,7 @@ header {
   width:100%;
   top:0;
   z-index:20;
-  background:rgba(9,8,23,.86);
+  background:rgba(9,8,23,.88);
   backdrop-filter:blur(16px);
   border-bottom:1px solid rgba(141,85,255,.2);
 }
@@ -46,7 +49,12 @@ header {
   letter-spacing:3px;
 }
 .logo span {color:var(--cyan)}
-nav {display:flex;gap:28px;font-size:13px;color:#c7c1df}
+nav {
+  display:flex;
+  gap:28px;
+  font-size:13px;
+  color:#c7c1df;
+}
 nav a:hover {color:var(--cyan)}
 .status {
   border:1px solid rgba(66,234,255,.4);
@@ -56,6 +64,8 @@ nav a:hover {color:var(--cyan)}
   font-size:10px;
   letter-spacing:1px;
 }
+
+/* HERO */
 
 .hero {
   min-height:850px;
@@ -87,8 +97,8 @@ nav a:hover {color:var(--cyan)}
 
 .hero-copy {
   position:relative;
-  z-index:5;
-  width:49%;
+  z-index:12;
+  width:46%;
   max-width:590px;
 }
 .eyebrow {
@@ -152,125 +162,257 @@ h1 span {
 .secondary {border:1px solid #51456e}
 .secondary:hover {border-color:var(--cyan);color:var(--cyan)}
 
+/* FLOATING ISLAND SCENE */
+
 .scene {
   position:absolute;
-  right:-2%;
+  right:-3%;
   top:50%;
-  width:58%;
-  height:650px;
+  width:65%;
+  height:720px;
   transform:translateY(-47%);
-  perspective:1000px;
+  perspective:1300px;
 }
+
 .island {
   position:absolute;
-  width:650px;
-  height:450px;
+  width:720px;
+  height:540px;
   left:50%;
   top:50%;
   transform:translate(-50%,-45%);
-  animation:float 6s ease-in-out infinite;
+  animation:islandFloat 7s ease-in-out infinite;
+  filter:drop-shadow(0 35px 35px #0009);
 }
-@keyframes float {
-  0%,100%{transform:translate(-50%,-45%) translateY(0)}
-  50%{transform:translate(-50%,-45%) translateY(-17px)}
+
+@keyframes islandFloat {
+  0%,100% {transform:translate(-50%,-45%) translateY(0)}
+  50% {transform:translate(-50%,-45%) translateY(-14px)}
 }
-.island-top {
-  position:absolute;
-  width:520px;
-  height:240px;
-  left:65px;
-  top:100px;
-  border-radius:50%;
-  background:linear-gradient(135deg,#83ce83,#377b57 55%,#24503e);
-  transform:rotate(-8deg);
-  clip-path:polygon(5% 25%,15% 8%,33% 5%,48% 0,67% 9%,85% 5%,99% 32%,95% 72%,78% 93%,54% 100%,29% 91%,8% 72%);
-  box-shadow:0 0 65px rgba(73,235,206,.12);
-}
+
+/* ROCKY UNDERGROUND */
+
 .island-rock {
   position:absolute;
-  top:245px;
-  left:105px;
-  width:450px;
-  height:155px;
-  background:linear-gradient(135deg,#66527f,#302746 60%,#171629);
-  clip-path:polygon(0 0,100% 0,88% 25%,77% 43%,65% 60%,56% 100%,40% 72%,25% 58%,12% 30%);
+  z-index:1;
+  left:65px;
+  top:235px;
+  width:590px;
+  height:255px;
+  background:
+    linear-gradient(145deg,#95859b,#66566f 35%,#40344f 65%,#211d35);
+  clip-path:polygon(
+    3% 0,97% 0,92% 17%,86% 30%,
+    79% 43%,73% 57%,66% 72%,
+    58% 100%,46% 84%,35% 72%,
+    23% 62%,15% 46%,8% 25%
+  );
 }
-.tree {
+.island-rock::before {
+  content:"";
+  position:absolute;
+  inset:20px 25px;
+  background:repeating-linear-gradient(
+    165deg,
+    transparent 0 25px,
+    #d4c1dc22 26px 29px,
+    transparent 30px 48px
+  );
+  clip-path:polygon(0 0,100% 0,85% 100%,15% 75%);
+}
+.island-rock::after {
+  content:"";
+  position:absolute;
+  left:100px;
+  top:35px;
+  width:330px;
+  height:110px;
+  background:#17142666;
+  clip-path:polygon(0 0,100% 0,75% 100%,25% 70%);
+}
+
+/* GRASS AND LAND */
+
+.island-top {
+  position:absolute;
+  z-index:2;
+  left:45px;
+  top:115px;
+  width:625px;
+  height:265px;
+  transform:rotate(-5deg);
+  background:
+    radial-gradient(ellipse at 30% 25%,#c2e69b 0 7%,transparent 8%),
+    radial-gradient(ellipse at 72% 65%,#9fd47e 0 9%,transparent 10%),
+    radial-gradient(ellipse at 45% 75%,#6caf68 0 12%,transparent 13%),
+    linear-gradient(145deg,#a6d987,#548d59 48%,#285344);
+  clip-path:polygon(
+    3% 29%,12% 10%,28% 4%,42% 8%,
+    57% 0,72% 10%,91% 9%,100% 35%,
+    94% 70%,78% 90%,56% 100%,
+    34% 94%,14% 81%,0 57%
+  );
+  box-shadow:inset 0 -25px 30px #142c27aa;
+}
+.island-top::after {
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(ellipse at 35% 40%,#e0f5bd44,transparent 30%),
+    repeating-linear-gradient(35deg,transparent 0 35px,#ffffff0a 36px 38px);
+}
+
+/* ROCK LEDGES */
+
+.cliff {
+  position:absolute;
+  z-index:3;
+  background:linear-gradient(130deg,#aa98a7,#66556f 50%,#30283f);
+  clip-path:polygon(0 0,100% 0,75% 100%,25% 70%);
+}
+.cliff.one {
+  left:145px;
+  top:335px;
+  width:175px;
+  height:100px;
+  transform:rotate(18deg);
+}
+.cliff.two {
+  left:415px;
+  top:340px;
+  width:175px;
+  height:110px;
+  transform:rotate(-12deg);
+}
+.cliff.three {
+  left:285px;
+  top:390px;
+  width:155px;
+  height:95px;
+  transform:rotate(5deg);
+}
+
+/* WATERFALLS */
+
+.waterfall {
   position:absolute;
   z-index:4;
-  width:55px;
-  height:105px;
-  top:85px;
+  top:350px;
+  width:24px;
+  height:135px;
+  background:linear-gradient(90deg,#39c9e077,#e0ffff,#39c9e088);
+  filter:drop-shadow(0 0 8px #42eaff);
+  clip-path:polygon(15% 0,85% 0,100% 100%,0 90%);
+  animation:waterShimmer 2s ease-in-out infinite alternate;
 }
-.tree:before {
-  content:"";
-  position:absolute;
-  width:12px;
-  height:55px;
-  background:#49332f;
-  left:22px;
-  bottom:0;
-}
-.tree:after {
-  content:"";
-  position:absolute;
-  width:65px;
-  height:75px;
-  left:-5px;
-  top:0;
-  background:linear-gradient(135deg,#8edb8b,#247b62);
-  clip-path:polygon(50% 0,100% 65%,75% 65%,100% 100%,0 100%,25% 65%,0 65%);
-}
-.tree.one {left:160px;top:75px;transform:scale(1.15)}
-.tree.two {left:390px;top:115px;transform:scale(.8)}
-.tree.three {left:280px;top:55px;transform:scale(.72)}
+.waterfall.one {left:210px;height:115px}
+.waterfall.two {left:515px;height:150px;width:30px}
+.waterfall.three {left:345px;top:410px;height:80px;width:15px}
 
-.house {
+@keyframes waterShimmer {
+  from {opacity:.65}
+  to {opacity:1}
+}
+
+/* TREES */
+
+.tree {
   position:absolute;
   z-index:5;
-  left:270px;
-  top:140px;
-  width:75px;
-  height:55px;
-  background:#ad8b75;
-  border:3px solid #674b53;
+  width:70px;
+  height:130px;
 }
-.house:before {
+.tree::before {
   content:"";
   position:absolute;
-  width:88px;
-  height:48px;
-  left:-9px;
-  top:-30px;
-  background:#563e70;
-  clip-path:polygon(50% 0,100% 100%,0 100%);
-}
-.house:after {
-  content:"";
-  position:absolute;
-  width:17px;
-  height:30px;
-  background:#382a43;
   bottom:0;
-  left:28px;
+  left:29px;
+  width:13px;
+  height:65px;
+  background:linear-gradient(90deg,#382a2b,#76513a,#30252b);
 }
-.portal {
+.tree::after {
+  content:"";
+  position:absolute;
+  top:0;
+  left:0;
+  width:72px;
+  height:88px;
+  background:
+    radial-gradient(ellipse at 50% 25%,#b6e999 0 15%,transparent 16%),
+    radial-gradient(ellipse at 30% 50%,#579c64 0 30%,transparent 31%),
+    radial-gradient(ellipse at 70% 50%,#397d57 0 32%,transparent 33%),
+    radial-gradient(ellipse at 50% 70%,#286449 0 35%,transparent 36%);
+  filter:drop-shadow(3px 5px 3px #142b24aa);
+}
+.tree.one {left:125px;top:115px;transform:scale(1.2)}
+.tree.two {left:485px;top:145px;transform:scale(.95)}
+.tree.three {left:355px;top:90px;transform:scale(.85)}
+.tree.four {left:225px;top:175px;transform:scale(.7)}
+.tree.five {left:565px;top:185px;transform:scale(.55)}
+
+/* VILLAGE BUILDINGS */
+
+.building {
   position:absolute;
   z-index:6;
-  left:445px;
-  top:100px;
-  width:50px;
-  height:90px;
-  border:5px solid #9a54ff;
-  border-radius:50%;
-  box-shadow:0 0 15px #9a54ff,inset 0 0 20px #9a54ff;
-  transform:rotate(12deg);
+  width:80px;
+  height:62px;
+  background:linear-gradient(120deg,#c9a783,#88664f);
+  border:3px solid #594354;
+  box-shadow:5px 7px 0 #30283d;
 }
+.building::before {
+  content:"";
+  position:absolute;
+  left:-10px;
+  top:-34px;
+  width:94px;
+  height:42px;
+  background:linear-gradient(120deg,#76546d,#352d4b);
+  clip-path:polygon(50% 0,100% 100%,0 100%);
+}
+.building::after {
+  content:"";
+  position:absolute;
+  bottom:0;
+  left:30px;
+  width:17px;
+  height:32px;
+  background:#493344;
+  border:2px solid #302637;
+}
+.building.one {left:270px;top:155px}
+.building.two {
+  left:380px;
+  top:190px;
+  transform:scale(.72);
+}
+
+/* PORTAL */
+
+.portal {
+  position:absolute;
+  z-index:7;
+  left:535px;
+  top:105px;
+  width:58px;
+  height:100px;
+  border:7px solid #a75cff;
+  border-radius:50%;
+  transform:rotate(12deg);
+  box-shadow:0 0 18px #a75cff,0 0 45px #793cff,inset 0 0 25px #42eaff;
+  background:radial-gradient(ellipse,#42eaff44,transparent 70%);
+}
+
+/* ORIGINAL BLOCKBOUND CORE */
+
 .core-wrap {
   position:absolute;
   z-index:10;
-  left:47%;
-  top:50%;
+  left:48%;
+  top:42%;
   transform:translate(-50%,-50%);
   width:150px;
   height:150px;
@@ -279,14 +421,14 @@ h1 span {
   animation:coreFloat 4s ease-in-out infinite;
 }
 @keyframes coreFloat {
-  0%,100%{transform:translate(-50%,-50%) rotate(-5deg)}
-  50%{transform:translate(-50%,-50%) translateY(-13px) rotate(5deg)}
+  0%,100% {transform:translate(-50%,-50%) rotate(-5deg)}
+  50% {transform:translate(-50%,-50%) translateY(-13px) rotate(5deg)}
 }
 .core-glow {
   position:absolute;
-  inset:-40px;
-  background:radial-gradient(circle,rgba(55,225,255,.45),rgba(129,55,255,.24) 40%,transparent 70%);
-  filter:blur(12px);
+  inset:-50px;
+  background:radial-gradient(circle,#42eaff66,#8137ff44 40%,transparent 70%);
+  filter:blur(15px);
 }
 .core-cube {
   position:relative;
@@ -295,13 +437,13 @@ h1 span {
   background:linear-gradient(145deg,#5531a4,#211345);
   border:2px solid #9a69ff;
   transform:rotate(45deg);
-  box-shadow:0 0 35px rgba(143,78,255,.8),inset 0 0 22px #0008;
+  box-shadow:0 0 35px #8f4effcc,inset 0 0 22px #0008;
 }
 .crystal {
   position:absolute;
   width:38px;
   height:58px;
-  background:linear-gradient(145deg,#d8ffff,#44eaff 45%,#1389c5);
+  background:linear-gradient(145deg,#eaffff,#44eaff 45%,#1389c5);
   clip-path:polygon(50% 0,100% 28%,78% 100%,20% 85%,0 30%);
   filter:drop-shadow(0 0 15px #42eaff);
 }
@@ -309,19 +451,23 @@ h1 span {
   position:absolute;
   width:200px;
   height:65px;
-  border:2px solid rgba(66,234,255,.75);
+  border:2px solid #42eaffbb;
   border-radius:50%;
   transform:rotate(-25deg);
-  box-shadow:0 0 20px rgba(66,234,255,.35);
+  box-shadow:0 0 20px #42eaff55;
 }
 .core-ring.second {
   width:235px;
   height:80px;
-  border-color:rgba(157,91,255,.65);
+  border-color:#9d5bffaa;
   transform:rotate(35deg);
 }
+
+/* FLOATING PARTICLES */
+
 .particle {
   position:absolute;
+  z-index:11;
   width:5px;
   height:5px;
   border-radius:50%;
@@ -329,14 +475,16 @@ h1 span {
   box-shadow:0 0 12px var(--cyan);
   animation:sparkle 3s infinite ease-in-out;
 }
-.p1{top:100px;left:180px}
-.p2{top:300px;left:500px;animation-delay:1s}
-.p3{top:200px;left:80px;animation-delay:2s}
-.p4{top:370px;left:300px;animation-delay:.5s}
+.p1 {top:100px;left:180px}
+.p2 {top:300px;left:500px;animation-delay:1s}
+.p3 {top:200px;left:80px;animation-delay:2s}
+.p4 {top:370px;left:300px;animation-delay:.5s}
+
 @keyframes sparkle {
-  0%,100%{opacity:.2;transform:scale(.5)}
-  50%{opacity:1;transform:scale(1.7)}
+  0%,100% {opacity:.2;transform:scale(.5)}
+  50% {opacity:1;transform:scale(1.7)}
 }
+
 .scroll {
   position:absolute;
   bottom:28px;
@@ -346,6 +494,8 @@ h1 span {
   font-size:10px;
   letter-spacing:3px;
 }
+
+/* GENERAL SECTIONS */
 
 section {padding:105px 8%;position:relative}
 .section-label {
@@ -365,6 +515,9 @@ section {padding:105px 8%;position:relative}
   line-height:1.8;
   max-width:650px;
 }
+
+/* WORLD */
+
 .world {background:linear-gradient(180deg,#090817,#100d23)}
 .world-grid {
   display:grid;
@@ -392,6 +545,8 @@ section {padding:105px 8%;position:relative}
   line-height:1.7;
 }
 
+/* CREATURES */
+
 .creatures {background:#0d0b1d}
 .creature-grid {
   display:grid;
@@ -418,6 +573,8 @@ section {padding:105px 8%;position:relative}
 .nightmare h3 {color:#c58bff;margin-bottom:10px}
 .nightmare p {color:#b7a9c8;line-height:1.7;font-size:14px}
 
+/* FEATURES */
+
 .features {background:linear-gradient(180deg,#0d0b1d,#100c25)}
 .feature-list {
   display:grid;
@@ -432,6 +589,8 @@ section {padding:105px 8%;position:relative}
 }
 .feature h3 {margin-bottom:8px}
 .feature p {color:var(--muted);font-size:13px;line-height:1.7}
+
+/* RELEASE */
 
 .release-section {
   text-align:center;
@@ -450,6 +609,9 @@ section {padding:105px 8%;position:relative}
   color:var(--muted);
   line-height:1.7;
 }
+
+/* ABOUT */
+
 .about {
   text-align:center;
   background:radial-gradient(ellipse at center,#5b35a02b,transparent 65%);
@@ -472,6 +634,9 @@ section {padding:105px 8%;position:relative}
   font-size:35px;
   text-shadow:0 0 15px var(--cyan);
 }
+
+/* FOOTER */
+
 footer {
   padding:35px 8%;
   border-top:1px solid #a087dc20;
@@ -484,13 +649,28 @@ footer {
 }
 footer strong {color:#d9d2f0}
 
-@media(max-width:900px) {
-  .hero {min-height:950px;align-items:flex-start}
-  .hero-copy {width:100%}
-  .scene {width:100%;top:650px;transform:translateY(-35%);opacity:.9}
-  .island {transform:translate(-50%,-45%) scale(.75)}
+/* RESPONSIVE */
+
+@media(max-width:1100px) {
+  .hero-copy {width:48%}
+  .scene {right:-13%;transform:translateY(-47%) scale(.85)}
   .world-grid {grid-template-columns:repeat(2,1fr)}
 }
+
+@media(max-width:900px) {
+  .hero {min-height:950px;align-items:flex-start}
+  .hero-copy {width:100%;max-width:600px}
+  .scene {
+    width:100%;
+    right:-5%;
+    top:690px;
+    transform:translateY(-35%) scale(.8);
+    transform-origin:top center;
+  }
+  .island {transform:translate(-50%,-45%) scale(.85)}
+  .world-grid {grid-template-columns:repeat(2,1fr)}
+}
+
 @media(max-width:600px) {
   header {padding:0 5%}
   nav {gap:12px;font-size:10px}
@@ -498,12 +678,17 @@ footer strong {color:#d9d2f0}
   .logo {font-size:17px}
   .hero {padding:140px 7% 30px;min-height:900px}
   h1 {letter-spacing:-3px}
-  .scene {top:690px}
-  .island {transform:translate(-50%,-45%) scale(.55)}
+  .scene {
+    top:680px;
+    right:0;
+    transform:translateY(-25%) scale(.58);
+    transform-origin:top center;
+  }
   section {padding:75px 7%}
   .world-grid,.creature-grid,.feature-list {grid-template-columns:1fr}
   footer {flex-direction:column}
 }
+
 @media(prefers-reduced-motion:reduce) {
   *,*::before,*::after {
     animation-duration:.01ms!important;
@@ -564,10 +749,24 @@ footer strong {color:#d9d2f0}
     <div class="island">
       <div class="island-rock"></div>
       <div class="island-top"></div>
+
+      <div class="cliff one"></div>
+      <div class="cliff two"></div>
+      <div class="cliff three"></div>
+
+      <div class="waterfall one"></div>
+      <div class="waterfall two"></div>
+      <div class="waterfall three"></div>
+
       <div class="tree one"></div>
       <div class="tree two"></div>
       <div class="tree three"></div>
-      <div class="house"></div>
+      <div class="tree four"></div>
+      <div class="tree five"></div>
+
+      <div class="building one"></div>
+      <div class="building two"></div>
+
       <div class="portal"></div>
 
       <div class="core-wrap">
@@ -597,16 +796,19 @@ footer strong {color:#d9d2f0}
       <h3>Ancient Forests</h3>
       <p>Explore dense forests filled with towering trees and hidden secrets.</p>
     </article>
+
     <article class="world-card">
       <div class="card-icon">⛰️</div>
       <h3>Massive Mountains</h3>
       <p>Travel across towering peaks, rocky cliffs, and distant valleys.</p>
     </article>
+
     <article class="world-card">
       <div class="card-icon">💧</div>
       <h3>Lakes & Rivers</h3>
       <p>Discover peaceful waterways, deep lakes, and mysterious underwater areas.</p>
     </article>
+
     <article class="world-card">
       <div class="card-icon">🕳️</div>
       <h3>Hidden Caves</h3>
@@ -629,11 +831,13 @@ footer strong {color:#d9d2f0}
       <h3>Wildlife</h3>
       <p>Discover peaceful creatures roaming through the world.</p>
     </article>
+
     <article class="creature-card">
       <div class="symbol">🐎</div>
       <h3>Travel Companions</h3>
       <p>Meet creatures that may help you explore distant lands.</p>
     </article>
+
     <article class="creature-card">
       <div class="symbol">👁️</div>
       <h3>Mysterious Creatures</h3>
@@ -664,14 +868,17 @@ footer strong {color:#d9d2f0}
       <h3>▦ Build Anything</h3>
       <p>Gather materials and create structures limited only by your imagination.</p>
     </article>
+
     <article class="feature">
       <h3>◈ Explore Further</h3>
       <p>Discover new environments, hidden locations, and distant landscapes.</p>
     </article>
+
     <article class="feature">
       <h3>✧ Discover Secrets</h3>
       <p>Search the world for rare discoveries and mysterious places.</p>
     </article>
+
     <article class="feature">
       <h3>⌁ Survive the Unknown</h3>
       <p>Prepare for the creatures and challenges waiting beyond the familiar.</p>
