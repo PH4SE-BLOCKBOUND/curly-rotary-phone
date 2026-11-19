@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BLOCKBOUND | Build Your World</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+ background:#090713;color:#f5f1ff;
+ font-family:Arial,Helvetica,sans-serif;
+ overflow-x:hidden;
+}
+body:before{
+ content:"";position:fixed;inset:0;z-index:-1;
+ background:
+ radial-gradient(ellipse at 50% 20%,#29134c 0%,transparent 55%),
+ radial-gradient(ellipse at 90% 80%,#10234a 0%,transparent 45%),
+ #090713;
+}
+header{
+ position:sticky;top:0;z-index:10;
+ display:flex;justify-content:space-between;align-items:center;
+ padding:20px 7%;background:#0c0918eF;
+ border-bottom:1px solid #33234e;
+ backdrop-filter:blur(12px);
+}
+.logo{font-size:25px;font-weight:900;letter-spacing:3px}
+.logo span{color:#50dfff}
+nav{display:flex;gap:25px}
+nav a{color:#c8bedc;text-decoration:none;font-size:14px}
+nav a:hover{color:#54e5ff}
+.hero{
+ min-height:650px;display:flex;align-items:center;
+ justify-content:center;text-align:center;padding:80px 20px;
+ position:relative;overflow:hidden;
+}
+.hero-content{max-width:850px;position:relative;z-index:2}
+.core{
+ width:130px;height:130px;margin:0 auto 40px;
+ background:linear-gradient(135deg,#51258d,#170d35);
+ border:3px solid #a05cff;
+ transform:rotate(45deg);
+ box-shadow:0 0 35px #963cff,0 0 90px #3a8dff;
+ position:relative;animation:float 4s ease-in-out infinite;
+}
+.crystal{
+ position:absolute;inset:27px;
+ background:linear-gradient(135deg,#d5ffff,#36dfff 50%,#1765d9);
+ box-shadow:0 0 25px #36dfff;
+ clip-path:polygon(50% 0,100% 35%,80% 100%,20% 100%,0 35%);
+}
+@keyframes float{
+ 0%,100%{transform:rotate(45deg) translateY(0)}
+ 50%{transform:rotate(45deg) translateY(-14px)}
+}
+h1{font-size:clamp(48px,9vw,92px);letter-spacing:7px}
+h1 span{color:#52ddff}
+.tagline{font-size:22px;color:#c6b8e8;margin:15px 0}
+.description{color:#aaa1bf;line-height:1.8;max-width:650px;margin:25px auto}
+.button{
+ display:inline-block;padding:15px 30px;border-radius:7px;
+ background:linear-gradient(100deg,#6e36d9,#267fe9);
+ color:white;text-decoration:none;font-weight:bold;
+ box-shadow:0 0 25px #5733ae66;
+ transition:.2s;
+}
+.button:hover{transform:translateY(-4px);box-shadow:0 0 35px #50dfff77}
+section{padding:85px 8%;max-width:1250px;margin:auto}
+.section-title{text-align:center;font-size:36px;margin-bottom:15px}
+.section-sub{text-align:center;color:#a99cbd;margin-bottom:45px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:22px}
+.card{
+ padding:28px;border:1px solid #382653;border-radius:13px;
+ background:linear-gradient(145deg,#1b142b,#100d1b);
+ transition:.25s;
+}
+.card:hover{transform:translateY(-6px);border-color:#50dfff;box-shadow:0 10px 35px #321b5c66}
+.card h3{color:#6ee6ff;margin-bottom:12px;font-size:21px}
+.card p{color:#aaa1bd;line-height:1.7}
+.banner{
+ text-align:center;padding:55px 25px;border:1px solid #443064;
+ border-radius:18px;background:linear-gradient(120deg,#24133d,#102541);
+}
+.banner h2{font-size:32px;margin-bottom:15px}
+.banner p{color:#c3bad3;line-height:1.7}
+footer{text-align:center;padding:35px;color:#817792;border-top:1px solid #30213f}
+footer strong{color:#55dfff}
+.stars{
+ position:absolute;inset:0;pointer-events:none;
+ background-image:
+ radial-gradient(2px 2px at 20% 30%,#fff9,transparent),
+ radial-gradient(2px 2px at 70% 20%,#70eaffaa,transparent),
+ radial-gradient(2px 2px at 85% 70%,#fff8,transparent),
+ radial-gradient(2px 2px at 35% 80%,#c28affaa,transparent);
+ background-size:250px 250px;
+ animation:drift 25s linear infinite;
+}
+@keyframes drift{to{background-position:250px 250px}}
+@media(max-width:650px){
+ header{padding:16px 5%;flex-wrap:wrap;gap:15px}
+ nav{gap:14px;flex-wrap:wrap}
+ nav a{font-size:12px}
+ .hero{min-height:570px}
+}
+</style>
+</head>
+<body>
+<header>
+ <div class="logo">BLOCK<span>BOUND</span></div>
+ <nav>
+  <a href="#world">The World</a>
+  <a href="#creatures">Creatures</a>
+  <a href="#features">Features</a>
+  <a href="#about">About</a>
+ </nav>
+</header>
+
+<main>
+<div class="hero">
+ <div class="stars"></div>
+ <div class="hero-content">
+  <div class="core"><div class="crystal"></div></div>
+  <h1>BLOCK<span>BOUND</span></h1>
+  <p class="tagline">Build Your World. Discover the Unknown.</p>
+  <p class="description">
+   Explore massive worlds, build incredible structures,
+   discover mysterious places, and create your own adventure.
+   A new voxel sandbox experience is being built.
+  </p>
+  <a href="#world" class="button">EXPLORE BLOCKBOUND</a>
+ </div>
+</div>
+
+<section id="world">
+ <h2 class="section-title">A WORLD WITHOUT LIMITS</h2>
+ <p class="section-sub">Every world has something waiting to be discovered.</p>
+ <div class="grid">
+  <div class="card"><h3>🌲 Forests</h3><p>Explore forests filled with trees, wildlife, and hidden discoveries.</p></div>
+  <div class="card"><h3>⛰️ Mountains</h3><p>Travel across towering mountains and explore the world beyond.</p></div>
+  <div class="card"><h3>💎 Caves</h3><p>Discover underground environments, rare materials, and secrets.</p></div>
+  <div class="card"><h3>🌊 Water</h3><p>Explore lakes, rivers, and beautiful natural environments.</p></div>
+ </div>
+</section>
+
+<section id="creatures">
+ <h2 class="section-title">MEET THE CREATURES</h2>
+ <p class="section-sub">An original collection of creatures and mysterious variants.</p>
+ <div class="grid">
+  <div class="card"><h3>Unique Mobs</h3><p>Discover creatures with original designs, personalities, and behaviors.</p></div>
+  <div class="card"><h3>Nightmare Variants</h3><p>Rare, darker versions of creatures with mysterious appearances and special abilities.</p></div>
+ </div>
+</section>
+
+<section id="features">
+ <h2 class="section-title">CREATE YOUR ADVENTURE</h2>
+ <p class="section-sub">Build, explore, discover, and shape your world.</p>
+ <div class="grid">
+  <div class="card"><h3>🧱 Building</h3><p>Create structures and shape the environment around you.</p></div>
+  <div class="card"><h3>🗺️ Exploration</h3><p>Discover new locations and explore expanding worlds.</p></div>
+  <div class="card"><h3>✨ Original Design</h3><p>Experience original creatures, environments, textures, and the mysterious Core.</p></div>
+ </div>
+</section>
+
+<section id="about">
+ <div class="banner">
+  <h2>THE ADVENTURE IS JUST BEGINNING</h2>
+  <p>BLOCKBOUND is currently in development.<br>
+  More worlds, creatures, and discoveries are planned.</p>
+  <br>
+  <a href="#top" class="button">BACK TO TOP</a>
+ </div>
+</section>
+</main>
+
+<footer>
+ <strong>BLOCKBOUND</strong><br><br>
+ Your world. Your adventure. Your BLOCKBOUND.<br><br>
+ © 2026 BLOCKBOUND · In Development
+</footer>
+</body>
+</html>
