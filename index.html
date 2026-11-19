@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -190,7 +189,7 @@ h1 span {
   50% {transform:translate(-50%,-45%) translateY(-14px)}
 }
 
-/* ROCKY UNDERGROUND */
+/* UPGRADED ROCKY UNDERGROUND */
 
 .island-rock {
   position:absolute;
@@ -200,12 +199,14 @@ h1 span {
   width:590px;
   height:255px;
   background:
-    linear-gradient(145deg,#95859b,#66566f 35%,#40344f 65%,#211d35);
+    repeating-linear-gradient(0deg,transparent 0 27px,#17132655 28px 31px),
+    repeating-linear-gradient(90deg,transparent 0 42px,#c4a9ce22 43px 46px),
+    linear-gradient(145deg,#b7a5b8,#75647d 35%,#40344f 70%,#201a32);
   clip-path:polygon(
-    3% 0,97% 0,92% 17%,86% 30%,
-    79% 43%,73% 57%,66% 72%,
-    58% 100%,46% 84%,35% 72%,
-    23% 62%,15% 46%,8% 25%
+    3% 0,97% 0,94% 20%,88% 34%,
+    82% 48%,76% 62%,69% 78%,
+    59% 100%,47% 87%,37% 76%,
+    24% 67%,14% 49%,7% 27%
   );
 }
 .island-rock::before {
@@ -242,10 +243,11 @@ h1 span {
   height:265px;
   transform:rotate(-5deg);
   background:
-    radial-gradient(ellipse at 30% 25%,#c2e69b 0 7%,transparent 8%),
+    repeating-linear-gradient(90deg,transparent 0 45px,#244e3540 46px 49px),
+    repeating-linear-gradient(0deg,transparent 0 35px,#d8f5b522 36px 39px),
+    radial-gradient(ellipse at 25% 25%,#c8efa1,transparent 35%),
     radial-gradient(ellipse at 72% 65%,#9fd47e 0 9%,transparent 10%),
-    radial-gradient(ellipse at 45% 75%,#6caf68 0 12%,transparent 13%),
-    linear-gradient(145deg,#a6d987,#548d59 48%,#285344);
+    linear-gradient(145deg,#9edb83,#579b61 55%,#285344);
   clip-path:polygon(
     3% 29%,12% 10%,28% 4%,42% 8%,
     57% 0,72% 10%,91% 9%,100% 35%,
@@ -268,7 +270,9 @@ h1 span {
 .cliff {
   position:absolute;
   z-index:3;
-  background:linear-gradient(130deg,#aa98a7,#66556f 50%,#30283f);
+  background:
+    repeating-linear-gradient(0deg,transparent 0 18px,#201a2e44 19px 22px),
+    linear-gradient(130deg,#aa98a7,#66556f 50%,#30283f);
   clip-path:polygon(0 0,100% 0,75% 100%,25% 70%);
 }
 .cliff.one {
@@ -301,7 +305,13 @@ h1 span {
   top:350px;
   width:24px;
   height:135px;
-  background:linear-gradient(90deg,#39c9e077,#e0ffff,#39c9e088);
+  background:repeating-linear-gradient(
+    90deg,
+    #39c9e088 0 5px,
+    #eaffff 6px 9px,
+    #39c9e088 10px 15px
+  );
+  box-shadow:0 0 18px #42eaff;
   filter:drop-shadow(0 0 8px #42eaff);
   clip-path:polygon(15% 0,85% 0,100% 100%,0 90%);
   animation:waterShimmer 2s ease-in-out infinite alternate;
@@ -340,11 +350,11 @@ h1 span {
   width:72px;
   height:88px;
   background:
-    radial-gradient(ellipse at 50% 25%,#b6e999 0 15%,transparent 16%),
-    radial-gradient(ellipse at 30% 50%,#579c64 0 30%,transparent 31%),
-    radial-gradient(ellipse at 70% 50%,#397d57 0 32%,transparent 33%),
-    radial-gradient(ellipse at 50% 70%,#286449 0 35%,transparent 36%);
-  filter:drop-shadow(3px 5px 3px #142b24aa);
+    radial-gradient(ellipse at 50% 20%,#d5f5a6 0 12%,transparent 13%),
+    radial-gradient(ellipse at 30% 45%,#70bd70 0 27%,transparent 28%),
+    radial-gradient(ellipse at 70% 45%,#438d5b 0 30%,transparent 31%),
+    radial-gradient(ellipse at 50% 70%,#286449 0 36%,transparent 37%);
+  filter:drop-shadow(4px 7px 5px #142b24);
 }
 .tree.one {left:125px;top:115px;transform:scale(1.2)}
 .tree.two {left:485px;top:145px;transform:scale(.95)}
@@ -359,9 +369,9 @@ h1 span {
   z-index:6;
   width:80px;
   height:62px;
-  background:linear-gradient(120deg,#c9a783,#88664f);
-  border:3px solid #594354;
-  box-shadow:5px 7px 0 #30283d;
+  background:linear-gradient(90deg,#8d6a4e 0 20%,#d4b18a 20% 80%,#8d6a4e 80%);
+  border:3px solid #49354a;
+  box-shadow:5px 7px 0 #241d35;
 }
 .building::before {
   content:"";
@@ -370,7 +380,9 @@ h1 span {
   top:-34px;
   width:94px;
   height:42px;
-  background:linear-gradient(120deg,#76546d,#352d4b);
+  background:repeating-linear-gradient(
+    90deg,#493044 0 12px,#76516d 13px 20px
+  );
   clip-path:polygon(50% 0,100% 100%,0 100%);
 }
 .building::after {
@@ -380,7 +392,7 @@ h1 span {
   left:30px;
   width:17px;
   height:32px;
-  background:#493344;
+  background:linear-gradient(90deg,#302033,#65445c);
   border:2px solid #302637;
 }
 .building.one {left:270px;top:155px}
@@ -402,7 +414,11 @@ h1 span {
   border:7px solid #a75cff;
   border-radius:50%;
   transform:rotate(12deg);
-  box-shadow:0 0 18px #a75cff,0 0 45px #793cff,inset 0 0 25px #42eaff;
+  box-shadow:
+    0 0 18px #a75cff,
+    0 0 45px #793cff,
+    0 0 75px #42eaff88,
+    inset 0 0 25px #42eaff;
   background:radial-gradient(ellipse,#42eaff44,transparent 70%);
 }
 
