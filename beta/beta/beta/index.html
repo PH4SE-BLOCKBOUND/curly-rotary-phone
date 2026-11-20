@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BLOCKBOUND Beta 0.1</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;overflow:hidden;background:#83c9ff;font-family:Arial;color:white}
+#start{position:fixed;inset:0;background:#10152bdc;display:grid;place-items:center;z-index:5;text-align:center}
+#panel{background:#171d36;padding:35px;border:2px solid #42eaff;border-radius:15px;max-width:420px}
+h1{color:#42eaff;letter-spacing:4px}
+button{background:#42eaff;color:#10152b;border:0;padding:14px 25px;border-radius:8px;font-weight:bold;cursor:pointer}
+#hud{position:fixed;inset:0;pointer-events:none}
+#cross{position:absolute;left:50%;top:50%;font-size:25px;transform:translate(-50%,-50%);text-shadow:0 1px 4px black}
+#hotbar{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);display:flex;gap:5px}
+.slot{width:53px;height:53px;background:#171d36cc;border:2px solid #aab5c8;border-radius:5px;display:grid;place-items:center;font-size:22px}
+.slot.active{border:3px solid #42eaff}
+#help{position:absolute;top:15px;left:15px;background:#10152bcc;padding:12px;border-radius:8px;font-size:13px;line-height:1.6}
+</style>
+</head>
+<body>
+<div id="start">
+ <div id="panel">
+  <h1>BLOCKBOUND</h1>
+  <h3> BETA 0.1</h3>
+  <p>Explore. Build. Discover.</p>
+  <p>WASD to move · Mouse to look<br>Left click to mine · Right click to build<br>1–5 to select blocks · Space to jump</p>
+  <button id="play">ENTER WORLD</button>
+ </div>
+</div>
+<div id="hud">
+ <div id="help">BLOCKBOUND BETA 0.1<br>WASD: Move<br>Mouse: Look<br>Left click: Mine<br>Right click: Place<br>Space: Jump<br>1–5: Select block</div>
+ <div id="cross">+</div>
+ <div id="hotbar">
+  <div class="slot active">🟩</div><div class="slot">🟫</div>
+  <div class="slot">🪨</div><div class="slot">🟨</div>
+  <div class="slot">🟦</div>
+ </div>
+</div>
+<script type="module">
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
+
+const scene=new THREE.Scene();
+scene.background=new THREE.Color(0x82caff);
+scene.fog=new THREE.Fog(0x82caff,25,75);
+
+const camera=new THREE.PerspectiveCamera(75,innerWidth/innerHeight,.1,150);
+camera.position.set(0,5,10);
+
+const renderer=new THREE.WebGLRenderer({antialias:true});
+renderer.setSize(innerWidth,innerHeight);
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.shadowMap.enabled=true;
+renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+renderer.outputColorSpace=THREE.SRGBColorSpace;
+document.body.appendChild(renderer.domElement);
+
+scene.add(new THREE.HemisphereLight(0xc9e7ff,0x536044,2));
+const sun=new THREE.DirectionalLight(0xfff0d0,2.5);
+sun.position.set(-20,35,15);
+sun.castShadow=true;
+sun.shadow.mapSize.set(2048,2048);
+scene.add(sun);
+
+const materials={
+ grass:new THREE.MeshStandardMaterial({color:0x55a83d,roughness:1}),
+ dirt:new THREE.MeshStandardMaterial({color:0x80502f,roughness:1}),
+ stone:new THREE.MeshStandardMaterial({color:0x858b91,roughness:1}),
+ sand:new THREE.MeshStandardMaterial({color:0xd7c17d,roughness:1}),
+ water:new THREE.MeshStandardMaterial({color:0x258ed0,transparent:true,opacity:.7,roughness:.25}),
+ wood:new THREE.MeshStandardMaterial({color:0x754525}),
+ leaves:new THREE.MeshStandardMaterial({color:0x287c35})
+};
+const geometry=new THREE.BoxGeometry(1,1,1);
+const blocks=new Map();
+const objects=[];
+function key(x,y,z){return `${x},${y},${z}`}
+function addBlock(x,y,z,type){
+ const k=key(x,y,z);if(blocks.has(k))return;
+ const mesh=new THREE.Mesh(geometry,materials[type]||materials.grass);
+ mesh.position.set(x,y,z);mesh.castShadow=true;mesh.receiveShadow=true;
+ mesh.userData={x,y,z,type};
+ scene.add(mesh);blocks.set(k,mesh);objects.push(mesh);
+}
+function removeBlock(mesh){
+ const d=mesh.userData;
+ blocks.delete(key(d.x,d.y,d.z));scene.remove(mesh);
+ const i=objects.indexOf(mesh);if(i>=0)objects.splice(i,1);
+}
+function height(x,z){
+ return Math.floor(2+Math.sin(x*.22)*1.5+Math.cos(z*.19)*1.5+Math.sin((x+z)*.12));
+}
+for(let x=-22;x<=22;x++){
+ for(let z=-22;z<=22;z++){
+  const h=height(x,z);
+  for(let y=0;y<=h;y++)addBlock(x,y,z,y===h?'grass':y>h-3?'dirt':'stone');
+  if(h<1)addBlock(x,h+1,z,'water');
+ }
+}
+function tree(x,z){
+ const h=height(x,z);
+ for(let y=1;y<=4;y++)addBlock(x,h+y,z,'wood');
+ for(let dx=-2;dx<=2;dx++)for(let dz=-2;dz<=2;dz++)
+  for(let dy=2;dy<=4;dy++){
+   if(Math.abs(dx)+Math.abs(dz)+Math.abs(dy-3)<=4)
+    addBlock(x+dx,h+dy,z+dz,'leaves');
+  }
+}
+for(let x=-18;x<=18;x+=6)for(let z=-18;z<=18;z+=7){
+ if(Math.abs(x)>3||Math.abs(z)>3)tree(x,z);
+}
+
+const ray=new THREE.Raycaster();
+const center=new THREE.Vector2(0,0);
+let selected='grass';
+let locked=false;
+const keys={};
+let velocityY=0;
+let grounded=false;
+const player={speed:6,height:1.7};
+camera.position.set(0,height(0,8)+3,8);
+
+document.getElementById('play').onclick=()=>{
+ renderer.domElement.requestPointerLock();
+};
+document.addEventListener('pointerlockchange',()=>{
+ locked=document.pointerLockElement===renderer.domElement;
+ document.getElementById('start').style.display=locked?'none':'grid';
+});
+document.addEventListener('keydown',e=>{
+ keys[e.code]=true;
+ if(e.code.startsWith('Digit')){
+  const n=Number(e.code.slice(5))-1;
+  const types=['grass','dirt','stone','sand','water'];
+  if(types[n]){selected=types[n];document.querySelectorAll('.slot').forEach((s,i)=>s.classList.toggle('active',i===n));}
+ }
+ if(e.code==='Space'&&grounded){velocityY=8;grounded=false;}
+});
+document.addEventListener('keyup',e=>keys[e.code]=false);
+document.addEventListener('contextmenu',e=>e.preventDefault());
+
+function targetBlock(){
+ ray.setFromCamera(center,camera);
+ const hits=ray.intersectObjects(objects,false);
+ return hits.length&&hits[0].distance<7?hits[0]:null;
+}
+document.addEventListener('mousedown',e=>{
+ if(!locked)return;
+ const hit=targetBlock();if(!hit)return;
+ if(e.button===0)removeBlock(hit.object);
+ if(e.button===2){
+  const normal=hit.face.normal.clone();
+  const p=hit.object.position.clone().add(normal);
+  if(p.distanceTo(camera.position)>1.5)addBlock(Math.round(p.x),Math.round(p.y),Math.round(p.z),selected);
+ }
+});
+
+function animate(){
+ requestAnimationFrame(animate);
+ const dt=Math.min(clock.getDelta(),.04);
+ if(locked){
+  const forward=new THREE.Vector3();
+  camera.getWorldDirection(forward);forward.y=0;forward.normalize();
+  const right=new THREE.Vector3().crossVectors(forward,new THREE.Vector3(0,1,0)).normalize();
+  const move=new THREE.Vector3();
+  if(keys.KeyW)move.add(forward);
+  if(keys.KeyS)move.sub(forward);
+  if(keys.KeyD)move.add(right);
+  if(keys.KeyA)move.sub(right);
+  if(move.lengthSq())move.normalize().multiplyScalar(player.speed*dt);
+  camera.position.add(move);
+  velocityY-=20*dt;
+  camera.position.y+=velocityY*dt;
+  const ground=height(Math.round(camera.position.x),Math.round(camera.position.z))+1.7;
+  if(camera.position.y<ground){camera.position.y=ground;velocityY=0;grounded=true;}
+ }
+ renderer.render(scene,camera);
+}
+const clock=new THREE.Clock();
+animate();
+
+document.addEventListener('mousemove',e=>{
+ if(!locked)return;
+ camera.rotation.order='YXZ';
+ camera.rotation.y-=e.movementX*.002;
+ camera.rotation.x-=e.movementY*.002;
+ camera.rotation.x=Math.max(-1.5,Math.min(1.5,camera.rotation.x));
+});
+addEventListener('resize',()=>{
+ camera.aspect=innerWidth/innerHeight;
+ camera.updateProjectionMatrix();
+ renderer.setSize(innerWidth,innerHeight);
+});
+</script>
+</body>
+</html>
