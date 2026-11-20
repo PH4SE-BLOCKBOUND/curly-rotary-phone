@@ -3,56 +3,50 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>BLOCKBOUND | Beta 0.2</title>
+<title>BLOCKBOUND Beta 0.3</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;overflow:hidden;background:#87ceeb;font-family:Arial;color:white}
+body{margin:0;overflow:hidden;background:#80caff;font-family:Arial;color:white}
 canvas{display:block}
-#start{position:fixed;inset:0;display:grid;place-items:center;background:#081020dd;z-index:5;text-align:center}
-#panel{background:#151d32;padding:32px;border:2px solid #42eaff;border-radius:14px;max-width:430px}
-h1{color:#42eaff;letter-spacing:5px;font-size:34px}
-button{background:#42eaff;color:#081020;border:0;border-radius:7px;padding:14px 25px;font-weight:bold;cursor:pointer}
+#menu{position:fixed;inset:0;z-index:5;display:grid;place-items:center;background:#080e20dd;text-align:center}
+#panel{background:#151e35;padding:30px;border:2px solid #42eaff;border-radius:14px;max-width:420px}
+h1{color:#42eaff;letter-spacing:5px}
+button{padding:14px 25px;background:#42eaff;border:0;border-radius:7px;font-weight:bold;cursor:pointer}
 #hud{position:fixed;inset:0;pointer-events:none}
-#help{position:absolute;top:14px;left:14px;background:#10192bdc;padding:12px;border-radius:8px;font-size:13px;line-height:1.6}
-#cross{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:25px;text-shadow:0 2px 4px black}
-#hotbar{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);display:flex;gap:5px}
-.slot{width:52px;height:52px;border:2px solid #9da9b9;background:#182238e8;border-radius:5px;display:grid;place-items:center;font-size:23px}
+#help{position:absolute;top:12px;left:12px;background:#10192bdc;padding:12px;border-radius:8px;font-size:13px;line-height:1.6}
+#cross{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:25px}
+#bar{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);display:flex;gap:5px}
+.slot{width:50px;height:50px;background:#172238e8;border:2px solid #9da9b9;border-radius:5px;display:grid;place-items:center;font-size:22px}
 .slot.active{border:3px solid #42eaff}
 </style>
 </head>
 <body>
-<div id="start">
- <div id="panel">
-  <h1>BLOCKBOUND</h1>
-  <h3>BETA 0.2 | WORLD REBUILT</h3>
-  <p>Explore a new world. Build your own adventure.</p>
-  <p>WASD: Move · Mouse: Look<br>
-  Left click: Mine · Right click: Place<br>
-  Space: Jump · 1–5: Select block</p>
-  <button id="play">ENTER WORLD</button>
- </div>
-</div>
+<div id="menu"><div id="panel">
+<h1>BLOCKBOUND</h1>
+<h3>BETA 0.3 | VOXEL ENGINE</h3>
+<p>Explore a procedurally generated world.</p>
+<p>WASD: Move · Mouse: Look<br>Left click: Mine · Right click: Place<br>Space: Jump · 1–4: Select block</p>
+<button id="start">ENTER WORLD</button>
+</div></div>
 <div id="hud">
- <div id="help">BLOCKBOUND BETA 0.2<br>WASD: Move<br>Mouse: Look<br>Left click: Mine<br>Right click: Place<br>Space: Jump<br>1–5: Select block</div>
- <div id="cross">+</div>
- <div id="hotbar">
-  <div class="slot active">🟩</div>
-  <div class="slot">🟫</div>
-  <div class="slot">🪨</div>
-  <div class="slot">🟨</div>
-  <div class="slot">🟦</div>
- </div>
+<div id="help">BLOCKBOUND BETA 0.3<br>WASD: Move<br>Mouse: Look<br>Left click: Mine<br>Right click: Place<br>Space: Jump<br>1–4: Select block<br><span id="status">Generating world...</span></div>
+<div id="cross">+</div>
+<div id="bar">
+<div class="slot active">🟩</div>
+<div class="slot">🟫</div>
+<div class="slot">🪨</div>
+<div class="slot">🟨</div>
 </div>
-
+</div>
 <script type="module">
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
 
 const scene=new THREE.Scene();
-scene.background=new THREE.Color(0x8bcfff);
-scene.fog=new THREE.Fog(0x8bcfff,38,105);
+scene.background=new THREE.Color(0x87cfff);
+scene.fog=new THREE.Fog(0x87cfff,35,100);
 
 const camera=new THREE.PerspectiveCamera(75,innerWidth/innerHeight,.1,180);
-camera.position.set(0,8,12);
+camera.position.set(0,15,8);
 
 const renderer=new THREE.WebGLRenderer({antialias:true});
 renderer.setSize(innerWidth,innerHeight);
@@ -61,31 +55,56 @@ renderer.shadowMap.enabled=true;
 renderer.shadowMap.type=THREE.PCFSoftShadowMap;
 renderer.outputColorSpace=THREE.SRGBColorSpace;
 renderer.toneMapping=THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure=1.15;
+renderer.toneMappingExposure=1.1;
 document.body.appendChild(renderer.domElement);
 
 scene.add(new THREE.HemisphereLight(0xd8efff,0x536044,2));
-const sun=new THREE.DirectionalLight(0xffedc5,2.6);
+const sun=new THREE.DirectionalLight(0xffedc5,2.4);
 sun.position.set(-30,50,25);
 sun.castShadow=true;
 sun.shadow.mapSize.set(2048,2048);
-sun.shadow.camera.left=-45;
-sun.shadow.camera.right=45;
-sun.shadow.camera.top=45;
-sun.shadow.camera.bottom=-45;
 scene.add(sun);
 
-/* PIXEL TEXTURE MAKER */
-function texture(base,details,seed){
+const SIZE=16, HEIGHT=48, RADIUS=2;
+const chunks=new Map();
+const cube=new THREE.BoxGeometry(1,1,1);
+const ray=new THREE.Raycaster();
+const center=new THREE.Vector2(0,0);
+const clock=new THREE.Clock();
+
+function hash(x,y,z){
+ let n=Math.imul(x,374761393)+Math.imul(y,668265263)+Math.imul(z,1442695041);
+ n=Math.imul(n^(n>>>13),1274126177);
+ return ((n^(n>>>16))>>>0)/4294967295;
+}
+function noise(x,z){
+ return Math.sin(x*.075)*4+
+ Math.cos(z*.065)*4+
+ Math.sin((x+z)*.035)*5+
+ Math.cos((x-z)*.018)*7;
+}
+function surface(x,z){
+ return Math.max(3,Math.min(37,Math.floor(15+noise(x,z))));
+}
+function cave(x,y,z){
+ if(y>surface(x,z)-3||y<3)return false;
+ const a=Math.sin(x*.18+y*.24)*Math.cos(z*.17-y*.12);
+ const b=Math.sin(z*.13+x*.09+y*.2);
+ return a+b*.7>.95;
+}
+const types=['grass','dirt','stone','sand','water'];
+let selected='grass';
+
+function pixelTexture(base,colors,seed){
  const c=document.createElement('canvas');
  c.width=c.height=16;
  const ctx=c.getContext('2d');
  ctx.fillStyle=base;ctx.fillRect(0,0,16,16);
  let n=seed;
- function rand(){n=(n*1664525+1013904223)>>>0;return n/4294967296}
- for(let i=0;i<65;i++){
-  ctx.fillStyle=details[Math.floor(rand()*details.length)];
-  ctx.fillRect(Math.floor(rand()*16),Math.floor(rand()*16),1+Math.floor(rand()*3),1+Math.floor(rand()*2));
+ for(let i=0;i<75;i++){
+  n=(n*1664525+1013904223)>>>0;
+  ctx.fillStyle=colors[n%colors.length];
+  ctx.fillRect((n>>>8)%16,(n>>>16)%16,1+(n%3),1+((n>>>4)%2));
  }
  const t=new THREE.CanvasTexture(c);
  t.magFilter=THREE.NearestFilter;
@@ -93,197 +112,204 @@ function texture(base,details,seed){
  t.colorSpace=THREE.SRGBColorSpace;
  return t;
 }
-function mat(tex){return new THREE.MeshStandardMaterial({map:tex,roughness:1})}
-
-const grassTop=mat(texture('#579c35',['#70b846','#47852e','#80bd4d','#39752b'],1));
-const grassSide=mat(texture('#795033',['#568f35','#659e3c','#805938','#98623d'],2));
-const dirt=mat(texture('#795033',['#8c603e','#67442d','#a4774c','#5c3d2b'],3));
-const stone=mat(texture('#858b91',['#a4a9ad','#6f777e','#747b82','#b2b4b5'],4));
-const sand=mat(texture('#d6c17d',['#ead596','#bda867','#e8d18a'],5));
-const wood=mat(texture('#704325',['#986137','#55331e','#a56b3d'],6));
-const leaves=mat(texture('#28713a',['#398d43','#1e5b30','#4b9c48','#235f2d'],7));
-const waterMat=new THREE.MeshStandardMaterial({color:0x43b7ec,transparent:true,opacity:.72,roughness:.18,metalness:.08});
-const blockGeo=new THREE.BoxGeometry(1,1,1);
-const grassMats=[grassSide,grassSide,grassTop,dirt,grassSide,grassSide];
-
-const blocks=new Map();
-const objects=[];
-const waterBlocks=[];
-
-function key(x,y,z){return `${x},${y},${z}`}
-function addBlock(x,y,z,type){
- const k=key(x,y,z);
- if(blocks.has(k))return;
- let mats=type==='grass'?grassMats:
-  type==='dirt'?dirt:
-  type==='stone'?stone:
-  type==='sand'?sand:
-  type==='wood'?wood:
-  type==='leaves'?leaves:waterMat;
- const mesh=new THREE.Mesh(blockGeo,mats);
- mesh.position.set(x,y,z);
- mesh.castShadow=type!=='water';
- mesh.receiveShadow=true;
- mesh.userData={x,y,z,type};
- scene.add(mesh);
- blocks.set(k,mesh);
- objects.push(mesh);
- if(type==='water')waterBlocks.push(mesh);
+function material(base,colors,seed){
+ return new THREE.MeshStandardMaterial({
+  map:pixelTexture(base,colors,seed),roughness:1
+ });
 }
-function removeBlock(mesh){
- const d=mesh.userData;
- blocks.delete(key(d.x,d.y,d.z));
- scene.remove(mesh);
- const i=objects.indexOf(mesh);
- if(i>=0)objects.splice(i,1);
- const w=waterBlocks.indexOf(mesh);
- if(w>=0)waterBlocks.splice(w,1);
-}
+const mats=[
+ material('#579b36',['#70b84a','#47852e','#80bd4d'],1),
+ material('#805333',['#986943','#67452d','#a4774c'],2),
+ material('#858b91',['#a4a9ad','#6f777e','#747b82'],3),
+ material('#d6c17d',['#ead596','#bda867','#e8d18a'],4)
+];
+const waterMat=new THREE.MeshStandardMaterial({
+ color:0x45b8e8,transparent:true,opacity:.72,roughness:.2
+});
+const blockIds={grass:0,dirt:1,stone:2,sand:3,water:4};
 
-function height(x,z){
- const distance=Math.sqrt(x*x+z*z);
- const clearing=Math.max(0,1-distance/8);
- const hills=Math.sin(x*.19)*1.8+Math.cos(z*.17)*1.7+
- Math.sin((x+z)*.12)*1.2;
- return Math.floor(2+hills*(1-clearing));
+function chunkKey(cx,cz){return cx+','+cz}
+function localIndex(x,y,z){return x+SIZE*(z+SIZE*y)}
+function getBlock(x,y,z){
+ const cx=Math.floor(x/SIZE),cz=Math.floor(z/SIZE);
+ const c=chunks.get(chunkKey(cx,cz));
+ if(!c||y<0||y>=HEIGHT)return 0;
+ const lx=((x%SIZE)+SIZE)%SIZE,lz=((z%SIZE)+SIZE)%SIZE;
+ return c.data[localIndex(lx,y,lz)];
 }
-
-/* TERRAIN */
-for(let x=-24;x<=24;x++){
- for(let z=-24;z<=24;z++){
-  const h=height(x,z);
-  for(let y=-2;y<=h;y++){
-   const type=y===h?'grass':y>=h-2?'dirt':'stone';
-   addBlock(x,y,z,type);
+function setBlock(x,y,z,id){
+ const cx=Math.floor(x/SIZE),cz=Math.floor(z/SIZE);
+ const c=chunks.get(chunkKey(cx,cz));
+ if(!c||y<0||y>=HEIGHT)return;
+ const lx=((x%SIZE)+SIZE)%SIZE,lz=((z%SIZE)+SIZE)%SIZE;
+ c.data[localIndex(lx,y,lz)]=id;
+ rebuildChunk(cx,cz);
+}
+function generateChunk(cx,cz){
+ const data=new Uint8Array(SIZE*HEIGHT*SIZE);
+ for(let x=0;x<SIZE;x++)for(let z=0;z<SIZE;z++){
+  const wx=cx*SIZE+x,wz=cz*SIZE+z;
+  const h=surface(wx,wz);
+  for(let y=0;y<=h;y++){
+   if(cave(wx,y,wz))continue;
+   let id=y===h?1:y>h-3?2:3;
+   if(y===h)id=1;
+   data[localIndex(x,y,z)]=id;
   }
-  if(h<=0)addBlock(x,h+1,z,'water');
  }
+ chunks.set(chunkKey(cx,cz),{data,mesh:null,water:null});
+ rebuildChunk(cx,cz);
 }
+const faces=[
+ {n:[1,0,0],v:[[.5,-.5,-.5],[.5,.5,-.5],[.5,.5,.5],[.5,-.5,.5]]},
+ {n:[-1,0,0],v:[[-.5,-.5,.5],[-.5,.5,.5],[-.5,.5,-.5],[-.5,-.5,-.5]]},
+ {n:[0,1,0],v:[[-.5,.5,-.5],[-.5,.5,.5],[.5,.5,.5],[.5,.5,-.5]]},
+ {n:[0,-1,0],v:[[-.5,-.5,.5],[-.5,-.5,-.5],[.5,-.5,-.5],[.5,-.5,.5]]},
+ {n:[0,0,1],v:[[.5,-.5,.5],[.5,.5,.5],[-.5,.5,.5],[-.5,-.5,.5]]},
+ {n:[0,0,-1],v:[[-.5,-.5,-.5],[-.5,.5,-.5],[.5,.5,-.5],[.5,-.5,-.5]]}
+];
 
-/* SMALLER, MORE NATURAL TREES */
-function tree(x,z){
- const h=height(x,z);
- const trunk=3+Math.floor(Math.abs(Math.sin(x*7+z*3))*2);
- for(let y=1;y<=trunk;y++)addBlock(x,h+y,z,'wood');
- const crown=h+trunk;
- for(let layer=0;layer<3;layer++){
-  const radius=layer===1?2:1;
-  for(let dx=-radius;dx<=radius;dx++){
-   for(let dz=-radius;dz<=radius;dz++){
-    if(Math.abs(dx)+Math.abs(dz)>radius+1)continue;
-    addBlock(x+dx,crown+layer-1,z+dz,'leaves');
+function buildGeometry(cx,cz,water=false){
+ const positions=[],normals=[],uvs=[],indices=[];
+ const materialGroups=[[],[],[],[]];
+ const c=chunks.get(chunkKey(cx,cz));
+ for(let x=0;x<SIZE;x++)for(let y=0;y<HEIGHT;y++)for(let z=0;z<SIZE;z++){
+  const id=c.data[localIndex(x,y,z)];
+  if(!id||(id===4)!==water)continue;
+  const wx=cx*SIZE+x,wz=cz*SIZE+z;
+  for(const f of faces){
+   const nx=wx+f.n[0],ny=y+f.n[1],nz=wz+f.n[2];
+   const neighbor=getBlock(nx,ny,nz);
+   if(neighbor&&((neighbor===4)===water))continue;
+   const start=positions.length/3;
+   for(const v of f.v){
+    positions.push(wx+v[0],y+v[1],wz+v[2]);
+    normals.push(...f.n);
    }
+   uvs.push(0,0,0,1,1,1,1,0);
+   indices.push(start,start+1,start+2,start,start+2,start+3);
+   if(!water)materialGroups[id-1].push(indices.length-6,6);
   }
  }
- addBlock(x,crown+2,z,'leaves');
-}
-
-/* SPACED-OUT FOREST, WITH A CLEAR SPAWN */
-for(let x=-20;x<=20;x+=5){
- for(let z=-20;z<=20;z+=6){
-  const nearSpawn=Math.abs(x)<7&&Math.abs(z)<7;
-  const chance=Math.abs(Math.sin(x*12.3+z*8.7));
-  if(!nearSpawn&&chance>.35)tree(x,z);
+ const g=new THREE.BufferGeometry();
+ g.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));
+ g.setAttribute('normal',new THREE.Float32BufferAttribute(normals,3));
+ g.setAttribute('uv',new THREE.Float32BufferAttribute(uvs,2));
+ g.setIndex(indices);
+ if(!water){
+  let offset=0;
+  for(let i=0;i<4;i++){
+   const count=materialGroups[i].reduce((a,b)=>a+b,0);
+   if(count){g.addGroup(offset,count,i);offset+=count;}
+  }
  }
+ return g;
+}
+function rebuildChunk(cx,cz){
+ const c=chunks.get(chunkKey(cx,cz));
+ if(!c)return;
+ if(c.mesh){scene.remove(c.mesh);c.mesh.geometry.dispose();}
+ if(c.water){scene.remove(c.water);c.water.geometry.dispose();}
+ const geo=buildGeometry(cx,cz,false);
+ c.mesh=new THREE.Mesh(geo,mats);
+ c.mesh.castShadow=true;c.mesh.receiveShadow=true;
+ scene.add(c.mesh);
+ const wg=buildGeometry(cx,cz,true);
+ c.water=new THREE.Mesh(wg,waterMat);
+ c.water.position.y=.04;
+ scene.add(c.water);
+}
+function updateChunks(){
+ const px=Math.floor(camera.position.x/SIZE);
+ const pz=Math.floor(camera.position.z/SIZE);
+ for(let x=px-RADIUS;x<=px+RADIUS;x++)
+ for(let z=pz-RADIUS;z<=pz+RADIUS;z++)
+  if(!chunks.has(chunkKey(x,z)))generateChunk(x,z);
+
+ for(const [k,c] of chunks){
+  const [x,z]=k.split(',').map(Number);
+  if(Math.abs(x-px)>RADIUS+1||Math.abs(z-pz)>RADIUS+1){
+   scene.remove(c.mesh);scene.remove(c.water);
+   c.mesh.geometry.dispose();c.water.geometry.dispose();
+   chunks.delete(k);
+  }
+ }
+ document.getElementById('status').textContent='Chunks loaded: '+chunks.size;
 }
 
-/* DISTANT MOUNTAIN BACKDROP */
-const mountainMat=new THREE.MeshStandardMaterial({color:0x718b9a,roughness:1});
-for(let i=0;i<13;i++){
- const a=i/13*Math.PI*2;
- const r=48;
- const mountain=new THREE.Mesh(
-  new THREE.ConeGeometry(5+Math.abs(Math.sin(i*4))*4,13+Math.abs(Math.cos(i*3))*13,5),
-  mountainMat
- );
- mountain.position.set(Math.cos(a)*r,7,Math.sin(a)*r);
- mountain.rotation.y=i*.7;
- mountain.castShadow=true;
- scene.add(mountain);
-}
-
-/* PLAYER */
-const ray=new THREE.Raycaster();
-const center=new THREE.Vector2(0,0);
+let locked=false,grounded=false,vy=0;
 const keys={};
-let locked=false,velocityY=0,grounded=false;
-let selected='grass';
-const clock=new THREE.Clock();
-
-camera.position.set(0,height(0,8)+2.7,8);
-
-document.getElementById('play').onclick=()=>{
- renderer.domElement.requestPointerLock();
-};
+document.getElementById('start').onclick=()=>renderer.domElement.requestPointerLock();
 document.addEventListener('pointerlockchange',()=>{
  locked=document.pointerLockElement===renderer.domElement;
- document.getElementById('start').style.display=locked?'none':'grid';
+ document.getElementById('menu').style.display=locked?'none':'grid';
 });
 document.addEventListener('keydown',e=>{
  keys[e.code]=true;
  if(e.code.startsWith('Digit')){
-  const n=Number(e.code.slice(5))-1;
-  const types=['grass','dirt','stone','sand','water'];
-  if(types[n]){
-   selected=types[n];
-   document.querySelectorAll('.slot').forEach((s,i)=>s.classList.toggle('active',i===n));
+  const i=Number(e.code.slice(5))-1;
+  if(types[i]&&i<4){
+   selected=types[i];
+   document.querySelectorAll('.slot').forEach((s,j)=>s.classList.toggle('active',i===j));
   }
  }
- if(e.code==='Space'&&grounded){velocityY=8;grounded=false;}
+ if(e.code==='Space'&&grounded){vy=8;grounded=false;}
 });
 document.addEventListener('keyup',e=>keys[e.code]=false);
 document.addEventListener('contextmenu',e=>e.preventDefault());
 
-function targetBlock(){
+function findTarget(){
  ray.setFromCamera(center,camera);
- const hits=ray.intersectObjects(objects,false);
- return hits.find(h=>h.distance<7);
+ const list=[];
+ for(const c of chunks.values())if(c.mesh)list.push(c.mesh);
+ const hits=ray.intersectObjects(list,false);
+ return hits.length&&hits[0].distance<7?hits[0]:null;
 }
 document.addEventListener('mousedown',e=>{
  if(!locked)return;
- const hit=targetBlock();
+ const hit=findTarget();
  if(!hit)return;
+ const p=hit.point.clone();
+ const n=hit.face.normal;
+ const bx=Math.floor(p.x-n.x*.01);
+ const by=Math.floor(p.y-n.y*.01);
+ const bz=Math.floor(p.z-n.z*.01);
  if(e.button===0){
-  if(hit.object.userData.type!=='water')removeBlock(hit.object);
+  setBlock(bx,by,bz,0);
  }
  if(e.button===2){
-  const p=hit.object.position.clone().add(hit.face.normal);
-  const x=Math.round(p.x),y=Math.round(p.y),z=Math.round(p.z);
-  if(new THREE.Vector3(x,y,z).distanceTo(camera.position)>1.5)
-   addBlock(x,y,z,selected);
+  const x=Math.floor(p.x+n.x*.01);
+  const y=Math.floor(p.y+n.y*.01);
+  const z=Math.floor(p.z+n.z*.01);
+  setBlock(x,y,z,blockIds[selected]);
  }
 });
+
+function groundHeight(x,z){return surface(Math.round(x),Math.round(z))+1.7}
+camera.position.set(0,groundHeight(0,8),8);
+updateChunks();
 
 function animate(){
  requestAnimationFrame(animate);
  const dt=Math.min(clock.getDelta(),.04);
-
  if(locked){
   const forward=new THREE.Vector3();
-  camera.getWorldDirection(forward);
-  forward.y=0;forward.normalize();
+  camera.getWorldDirection(forward);forward.y=0;forward.normalize();
   const right=new THREE.Vector3().crossVectors(forward,new THREE.Vector3(0,1,0)).normalize();
   const move=new THREE.Vector3();
   if(keys.KeyW)move.add(forward);
   if(keys.KeyS)move.sub(forward);
-  if(keys.KeyD)move.add(right);
   if(keys.KeyA)move.sub(right);
-  if(move.lengthSq())camera.position.add(move.normalize().multiplyScalar(6*dt));
-
-  velocityY-=20*dt;
-  camera.position.y+=velocityY*dt;
-  const ground=height(Math.round(camera.position.x),Math.round(camera.position.z))+1.7;
-  if(camera.position.y<ground){
-   camera.position.y=ground;
-   velocityY=0;
-   grounded=true;
-  }
+  if(keys.KeyD)move.add(right);
+  if(move.lengthSq())camera.position.add(move.normalize().multiplyScalar(7*dt));
+  vy-=22*dt;
+  camera.position.y+=vy*dt;
+  const floor=groundHeight(camera.position.x,camera.position.z);
+  if(camera.position.y<floor){camera.position.y=floor;vy=0;grounded=true;}
+  updateChunks();
  }
-
  const t=performance.now()*.001;
- waterBlocks.forEach((b,i)=>{
-  b.position.y=b.userData.y+Math.sin(t*1.5+i*.3)*.035;
- });
+ for(const c of chunks.values())if(c.water)c.water.position.y=.04+Math.sin(t*1.8)*.035;
  renderer.render(scene,camera);
 }
 animate();
@@ -295,7 +321,6 @@ document.addEventListener('mousemove',e=>{
  camera.rotation.x-=e.movementY*.002;
  camera.rotation.x=Math.max(-1.5,Math.min(1.5,camera.rotation.x));
 });
-
 addEventListener('resize',()=>{
  camera.aspect=innerWidth/innerHeight;
  camera.updateProjectionMatrix();
